@@ -1,0 +1,15 @@
+/home/user/Desktop/testvisual/BookingSystem/obj/Debug/net7.0/BookingSystem.csproj.AssemblyReference.cache
+/home/user/Desktop/testvisual/BookingSystem/obj/Debug/net7.0/BookingSystem.GeneratedMSBuildEditorConfig.editorconfig
+/home/user/Desktop/testvisual/BookingSystem/obj/Debug/net7.0/BookingSystem.AssemblyInfoInputs.cache
+/home/user/Desktop/testvisual/BookingSystem/obj/Debug/net7.0/BookingSystem.AssemblyInfo.cs
+/home/user/Desktop/testvisual/BookingSystem/obj/Debug/net7.0/BookingSystem.csproj.CoreCompileInputs.cache
+/home/user/Desktop/testvisual/BookingSystem/bin/Debug/net7.0/BookingSystem
+/home/user/Desktop/testvisual/BookingSystem/bin/Debug/net7.0/BookingSystem.deps.json
+/home/user/Desktop/testvisual/BookingSystem/bin/Debug/net7.0/BookingSystem.runtimeconfig.json
+/home/user/Desktop/testvisual/BookingSystem/bin/Debug/net7.0/BookingSystem.dll
+/home/user/Desktop/testvisual/BookingSystem/bin/Debug/net7.0/BookingSystem.pdb
+/home/user/Desktop/testvisual/BookingSystem/obj/Debug/net7.0/BookingSystem.dll
+/home/user/Desktop/testvisual/BookingSystem/obj/Debug/net7.0/refint/BookingSystem.dll
+/home/user/Desktop/testvisual/BookingSystem/obj/Debug/net7.0/BookingSystem.pdb
+/home/user/Desktop/testvisual/BookingSystem/obj/Debug/net7.0/BookingSystem.genruntimeconfig.cache
+/home/user/Desktop/testvisual/BookingSystem/obj/Debug/net7.0/ref/BookingSystem.dll
