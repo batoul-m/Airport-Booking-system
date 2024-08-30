@@ -2,128 +2,36 @@ using System;
 
 namespace BookingSystem
 {
-    public class Flight
-    {
-        private string flightID;
-        private string departureCountry;
-        private string destinationCountry;
-        private DateTime departureDate;
-        private string departureAirport;
-        private string arrivalAirport;
-        private decimal price;
-        private string flightClass;
+    public enum FlightClass{
+        Economy,
+        Business,
+        FirstClass }
+    public class Flight{
+        public string FlightID{ get; set; }
+        public string DepartureCountry{ get; set; }
+        public string DestinationCountry{ get; set; }
+        public DateTime DepartureDate{ get; set; }
+        public string DepartureAirport{ get; set; }
+        public string ArrivalAirport{ get; set; }
+        public decimal Price{ get; set; }
+        public FlightClass Class{ get; set; }
 
-        public Flight()
-        {
-        }
-
-        public Flight(string flightID, string departureCountry, string destinationCountry, DateTime departureDate, string departureAirport, string arrivalAirport, decimal price, string flightClass)
-        {
-            FlightID = flightID;
-            DepartureCountry = departureCountry;
-            DestinationCountry = destinationCountry;
-            DepartureDate = departureDate;
-            DepartureAirport = departureAirport;
-            ArrivalAirport = arrivalAirport;
-            Price = price;
-            Class = flightClass;
-        }
-
-        public string FlightID
-        {
-            get { return flightID; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentException("FlightID cannot be null or empty.");
-                flightID = value;
-            }
-        }
-
-        public string DepartureCountry
-        {
-            get { return departureCountry; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentException("Departure Country cannot be null or empty.");
-                departureCountry = value;
-            }
-        }
-
-        public string DestinationCountry
-        {
-            get { return destinationCountry; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentException("Destination Country cannot be null or empty.");
-                destinationCountry = value;
-            }
-        }
-
-        public DateTime DepartureDate
-        {
-            get { return departureDate; }
-            set
-            {
-                if (value < DateTime.Now)
-                    throw new ArgumentException("Departure date must be in the future.");
-                departureDate = value;
-            }
-        }
-
-        public string DepartureAirport
-        {
-            get { return departureAirport; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentException("Departure Airport cannot be null or empty.");
-                departureAirport = value;
-            }
-        }
-
-        public string ArrivalAirport
-        {
-            get { return arrivalAirport; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentException("Arrival Airport cannot be null or empty.");
-                arrivalAirport = value;
-            }
-        }
-
-        public decimal Price
-        {
-            get { return price; }
-            set
-            {
-                if (value <= 0)
-                    throw new ArgumentException("Price must be greater than zero.");
-                price = value;
-            }
-        }
-
-        public string Class
-        {
-            get { return flightClass; }
-            set
-            {
-                if (value != "Economy" && value != "Business" && value != "First Class")
-                {
-                    throw new ArgumentException("Invalid class. Valid options are: Economy, Business, First Class.");
-                }
-                flightClass = value;
-            }
-        }
-
-        public bool IsAvailable(DateTime date, string departureCountry, string destinationCountry)
-        {
-            return this.DepartureDate.Date == date.Date &&
-                   string.Equals(this.DepartureCountry, departureCountry, StringComparison.OrdinalIgnoreCase) &&
-                   string.Equals(this.DestinationCountry, destinationCountry, StringComparison.OrdinalIgnoreCase);
+        public Flight(string flightID,string departureAirport,string departureCountry,string destinationCountry,string arrivalAirport,DateTime departureDate,decimal price,string classFlight){
+            FlightID = string.IsNullOrEmpty(flightID)
+                    ?flightID : throw new ArgumentNullException("can not be null or empty");
+            DepartureCountry = string.IsNullOrEmpty(departureCountry)
+                    ?departureCountry: throw new ArgumentNullException("can not be null or empty");           
+            DestinationCountry = string.IsNullOrEmpty(destinationCountry)
+                    ?destinationCountry: throw new ArgumentNullException("can not be null or empty");
+            DepartureAirport = string.IsNullOrEmpty(departureAirport)
+                    ?departureAirport: throw new ArgumentNullException("can not be null or empty");
+            ArrivalAirport = string.IsNullOrEmpty(arrivalAirport)
+                    ?arrivalAirport: throw new ArgumentNullException("can not be null or empty");
+            DepartureDate = departureDate > DateTime.Now ? departureDate : throw new ArgumentException("can not take past dates");
+            Price = price > 0 ? price : 0;
+            if (Enum.TryParse(classFlight, out FlightClass flightClass) && Enum.IsDefined(typeof(FlightClass), flightClass))
+                Class = flightClass; // Assign the parsed enum value
+            else throw new ArgumentException("Class not valid", nameof(classFlight));
         }
     }
 }

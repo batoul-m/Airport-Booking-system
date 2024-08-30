@@ -2,102 +2,40 @@ using System;
 
 namespace BookingSystem
 {
-    public class Booking
-    {
-        private string bookingID;
-        private string bookingClass;
-        private Flight flight;
-        private DateTime bookingDate;
-        private Passenger passenger; 
-
-
-        public Booking()
-        {
-        }
-
-        public Booking(string bookingID, string @class, Flight flight, DateTime bookingDate, Passenger passenger)
-        {
-            BookingID = bookingID;
-            Class = @class;
+    public enum BookingClass{
+        Economy,
+        Business,
+        FirstClass }
+    public class Booking {
+        public string? BookingID{ get; set; }
+        public BookingClass? Class{ get; set; }
+        public Flight Flight{ get; set; }
+        public DateTime BookingDate{ get; set; }
+        public Passenger Passenger{ get; set; }
+        public Booking(string bookingID, string classBook, Flight flight, DateTime bookingDate, Passenger passenger){
+            ValidData(bookingID,classBook,bookingDate);
             Flight = flight;
-            BookingDate = bookingDate;
             Passenger = passenger;
         }
+        //Checking the data validty 
+        public void ValidData(string bookingID,string classBook,DateTime bookingDate){
+            BookingID = !string.IsNullOrEmpty(bookingID) 
+                ? bookingID 
+                : throw new ArgumentNullException(nameof(bookingID), "Booking ID cannot be empty");
+            
+            if (Enum.TryParse(classBook, out BookingClass bookingClass) && Enum.IsDefined(typeof(BookingClass), bookingClass))
+                Class = bookingClass; // Assign the parsed enum value
+            else throw new ArgumentException("Class not valid", nameof(classBook));
+            
+            BookingDate = bookingDate > DateTime.Now ? bookingDate : throw new ArgumentException("you cann't book in past");
 
-        public string BookingID
-        {
-            get { return bookingID; }
-            set 
-            { 
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentException("BookingID cannot be null or empty.");
-                bookingID = value; 
-            }
         }
-
-        public string Class
-        {
-            get { return bookingClass; }
-            set
-            {
-                if (value != "Economy" && value != "Business" && value != "First Class")
-                {
-                    throw new ArgumentException("Invalid class. Valid options are: Economy, Business, First Class.");
-                }
-                bookingClass = value;
-            }
-        }
-
-        public Flight Flight
-        {
-            get { return flight; }
-            set 
-            { 
-                flight = value ?? throw new ArgumentNullException(nameof(Flight), "Flight cannot be null."); 
-            }
-        }
-
-        public DateTime BookingDate
-        {
-            get { return bookingDate; }
-            set 
-            { 
-                if (value == default)
-                    throw new ArgumentException("BookingDate cannot be default value.");
-                bookingDate = value; 
-            }
-        }
-
-        public Passenger Passenger
-        {
-            get { return passenger; }
-            set 
-            { 
-                passenger = value ?? throw new ArgumentNullException(nameof(Passenger), "Passenger cannot be null."); 
-            }
-        }
-
-
-        public void CancelBooking()
-        {
-            Console.WriteLine($"Booking {BookingID} has been canceled.");
-        }
-
-        public void ModifyBooking(string newClass, Flight newFlight)
-        {
-            Class = newClass;  
-            Flight = newFlight ?? throw new ArgumentNullException(nameof(newFlight), "Flight cannot be null.");
-            Console.WriteLine($"Booking {BookingID} has been modified.");
-        }
-
         public void ViewBookingDetails()
         {
-            Console.WriteLine($"Booking ID: {BookingID}");
-            Console.WriteLine($"Passenger Name: {Passenger.Name}");
-            Console.WriteLine($"Flight ID: {Flight.FlightID}");
-            Console.WriteLine($"Class: {Class}");
-            Console.WriteLine($"Booking Date: {BookingDate}");
-            Console.WriteLine($"Departure: {Flight.DepartureCountry} -> {Flight.DestinationCountry}");
+            Console.WriteLine($"Booking ID: {BookingID}" + $"Passenger Name: {Passenger.Name}"+
+            $"Flight ID: {Flight.FlightID}" + $"Class: {Class}" + 
+            $"Booking Date: {BookingDate}" + 
+            $"Departure: {Flight.DepartureCountry} -> {Flight.DestinationCountry}");
         }
     }
 }
