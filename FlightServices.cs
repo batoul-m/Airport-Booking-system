@@ -1,11 +1,20 @@
 namespace BookingSystem
 {
+<<<<<<< HEAD
     public class FlightService : IFlightService{
         private readonly IFileDataAccess _dataAccess;
         private List<Flight> _flights;
         public FlightService(IFileDataAccess dataAccess)
         {
             _dataAccess = dataAccess;
+=======
+    public class FlightService
+    {
+        private List<Flight> _flights;
+        private FileDataAccess _dataAccess;
+        public FlightService()
+        {
+>>>>>>> projectUsingPattern
             _flights = new List<Flight>();
         }
         public List<Flight> SearchFlights(string departureCountry, string destinationCountry, DateTime departureDate, string classType, decimal maxPrice)
@@ -17,9 +26,15 @@ namespace BookingSystem
                 (maxPrice <= 0 || f.Price <= maxPrice)
             ).ToList();
         }
+<<<<<<< HEAD
         public Flight? SearchFlightsById(string flightID)
         {
             return _flights.FirstOrDefault(f => f.FlightID == flightID);
+=======
+        public Flight? SearchFlightsById(string flightID){
+            if (string.IsNullOrEmpty(flightID)) return null;
+            return _flights.FirstOrDefault(f => f.FlightID == flightID);   
+>>>>>>> projectUsingPattern
         }
         public void AddFlight(Flight flight)
         {
@@ -32,8 +47,14 @@ namespace BookingSystem
         }
         public void ImportFlightsFromCsv(string filePath)
         {
+<<<<<<< HEAD
             _flights = _dataAccess.LoadFlights(filePath);
         }
+=======
+            _dataAccess.LoadFlights(filePath);
+        }
+            
+>>>>>>> projectUsingPattern
         public List<string> ValidateFlightData(Flight flight)
         {
             var errors = new List<string>();

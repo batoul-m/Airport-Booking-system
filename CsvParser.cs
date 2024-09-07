@@ -1,79 +1,63 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-
-namespace BookingSystem
-{
-    public static class CsvParser
-    {
-        public static List<Flight> ParseFlights(string filePath)
-        {
+namespace BookingSystem{
+    public class CsvParser{
+        public List<Flight> ParseFlights(string filePath){
             var flights = new List<Flight>();
-
-            using (var reader = new StreamReader(filePath))
-            {
-                
+            using (var reader = new StreamReader(filePath)){
                 reader.ReadLine();
-
-                while (!reader.EndOfStream)
-                {
+                while (!reader.EndOfStream){
                     var line = reader.ReadLine();
                     var values = line.Split(',');
-
                     if (values.Length != 8)
                         throw new InvalidDataException("CSV file format is invalid.");
-
-                    var flight = new Flight
-                    {
-                        FlightID = values[0],
-                        DepartureCountry = values[1],
-                        DestinationCountry = values[2],
-                        DepartureDate = DateTime.Parse(values[3], CultureInfo.InvariantCulture),
-                        DepartureAirport = values[4],
-                        ArrivalAirport = values[5],
-                        Price = decimal.Parse(values[6], CultureInfo.InvariantCulture),
-                        Class = values[7]
-                    };
+                    var flight = new Flight(
+                    flightID: values[0],
+                    departureAirport: values[4],
+                    departureCountry: values[1],
+                    destinationCountry: values[2],
+                    arrivalAirport: values[5],
+                    departureDate: DateTime.Parse(values[3], CultureInfo.InvariantCulture),
+                    price: decimal.Parse(values[6], CultureInfo.InvariantCulture),
+                    classFlight: values[7]
+                );
 
                     flights.Add(flight);
                 }
-            }
-
-            return flights;
+            }return flights;
         }
-
-        public static List<Booking> ParseBookings(string filePath)
+        public List<Booking> ParseBookings(string filePath)
         {
             var bookings = new List<Booking>();
-
             using (var reader = new StreamReader(filePath))
             {
-                
                 reader.ReadLine();
-
-                while (!reader.EndOfStream)
-                {
+                while (!reader.EndOfStream){
                     var line = reader.ReadLine();
                     var values = line.Split(',');
-
                     if (values.Length != 5)
                         throw new InvalidDataException("CSV file format is invalid.");
-
-                    var booking = new Booking
-                    {
-                        BookingID = values[0],
-                        Class = values[1],
-                        Flight = new Flight { FlightID = values[2] }, 
-                        BookingDate = DateTime.Parse(values[3], CultureInfo.InvariantCulture),
-                        Passenger = new Passenger { PassengerID = double.Parse(values[4]) } 
-                    };
-
+                    var booking = new Booking(
+                        bookingID: values[0],
+                        classBook: values[1],
+                        flight: new Flight(
+                            flightID: values[2],  
+                            departureAirport: values[3],  
+                            departureCountry: values[4],  
+                            destinationCountry: values[5],  
+                            arrivalAirport: values[6],  
+                            departureDate: DateTime.Parse(values[7], CultureInfo.InvariantCulture),  
+                            price: decimal.Parse(values[8], CultureInfo.InvariantCulture),  
+                            classFlight: values[1]  ),
+                        bookingDate: DateTime.Parse(values[7], CultureInfo.InvariantCulture),
+                        passenger: new Passenger (
+                            name: values[9],            
+                            passengerID: values[10],      
+                            passportNumber: double.Parse(values[11]) )
+                    );
                     bookings.Add(booking);
                 }
-            }
-
-            return bookings;
+            }return bookings;
         }
     }
 }
