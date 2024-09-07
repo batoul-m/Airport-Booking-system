@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "oYgMSZmPUccZkmiqcRS1ARNeni8RIAhDfVajWwI4gRL1rF8p+CiU6gRewmGpBqRYsC97b+nXItGoT0OHzl9Pgg==",
+  "dgSpecHash": "dTMoEHfiCfDlrH2wNoZyO0toulPDdc4R6j+jwtGCYvawnYIJ0uvXV/8Lq4kMEwUksbIO7GwJVoJAEj07QpelQg==",
   "success": true,
   "projectFilePath": "/home/user/Desktop/testvisual/BookingSystem/BookingSystem.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/user/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.0/microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "/home/user/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

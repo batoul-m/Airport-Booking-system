@@ -1,66 +1,50 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace BookingSystem{
-    public class BookingServices
-    {
-        private List<Booking> bookings;
-
-        public BookingServices()
+namespace BookingSystem
+{
+    public class BookingServices : IBookingServices{
+        private readonly IFileDataAccess _dataAccess;
+        private List<Booking> _bookings;
+        public BookingServices(IFileDataAccess dataAccess)
         {
-            bookings = new List<Booking>();
+            _dataAccess = dataAccess;
+            _bookings = new List<Booking>();
         }
         public Booking BookFlight(Passenger passenger, Flight flight, string classType)
         {
-            string bookingId = Guid.NewGuid().ToString();
-
-            Booking newBooking = new Booking(bookingId, classType, flight, DateTime.Now, passenger);
-
-            bookings.Add(newBooking);
-
-            return newBooking;
+            var booking = new Booking();  // Assume Booking class is properly defined
+            _bookings.Add(booking);
+            _dataAccess.SaveBookings(_bookings);
+            return booking;
         }
-
-        public void CancelBooking(string bookingId)
+        public void CancelBooking(string bookingID)
         {
-            Booking booking = bookings.FirstOrDefault(b => b.BookingID == bookingId);
-
-            if (booking != null)
+            var booking = _bookings.FirstOrDefault(b => b.BookingID == bookingID);
+            if (booking is not null)
             {
-                booking.CancelBooking(); 
-            }
-            else
-            {
-                Console.WriteLine("Booking not found.");
+                _bookings.Remove(booking);
+                _dataAccess.SaveBookings(_bookings);
             }
         }
-
-        public void ModifyBooking(string bookingId, Flight newFlight, string newClass)
+        public void ModifyBooking(string bookingID, Flight newFlight, string newClass)
         {
-            Booking booking = bookings.FirstOrDefault(b => b.BookingID == bookingId);
-
-            if (booking != null)
+            var booking = _bookings.FirstOrDefault(b => b.BookingID == bookingID);
+            if (booking is not null)
             {
-                booking.ModifyBooking(newClass, newFlight); 
-            }
-            else
-            {
-                Console.WriteLine("Booking not found.");
+                booking.Flight = newFlight;
+                booking.Class = newClass;
+                _dataAccess.SaveBookings(_bookings);
             }
         }
 
-        public List<Booking> GetBookingsByPassenger(double passengerId)
+        public List<Booking> GetBookingsByPassenger(double passengerID)
         {
-            return bookings.Where(b => b.Passenger.PassportNumber == passengerId).ToList();
+            return _bookings.Where(b => b.Passenger.PassportNumber == passengerID).ToList();
         }
 
         public List<Booking> GetBookingsByCriteria(string flightId, double passengerId, string classType)
         {
-            return bookings.Where(b =>
+            return _bookings.Where(b =>
                 (string.IsNullOrEmpty(flightId) || b.Flight.FlightID == flightId) &&
-                (passengerId <= 0 || b.Passenger.PassportNumber == passengerId) &&
-                (string.IsNullOrEmpty(classType) || b.Class == classType)
+                (passengerId <= 0 || b.Passenger.PassportNumber == passengerId)
             ).ToList();
         }
     }

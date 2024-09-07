@@ -1,43 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using Microsoft.Extensions.DependencyInjection;
 using BookingSystem;
 
-    class Program
+class Program
+{
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        // Setup Dependency Injection
+        var serviceProvider = new ServiceCollection()
+            .AddSingleton<IFlightService, FlightService>()
+            .AddSingleton<IBookingServices, BookingServices>()
+            .AddSingleton<IFileDataAccess, FileDataAccess>()
+            .AddSingleton<IManagerServices, ManagerServices>()
+            .AddSingleton<IPassengerServices, PassengerServices>()
+            .BuildServiceProvider();
+
+        var flightService = serviceProvider.GetService<IFlightService>();
+        var bookingServices = serviceProvider.GetService<IBookingServices>();
+
+        while (true)
         {
-            var flightService = new FlightService();
-            var bookingServices = new BookingServices();
-            var manager = new Manager();
+            Console.Clear();
+            Console.WriteLine("Airport Ticket Booking System");
+            Console.WriteLine("1. Login as Passenger");
+            Console.WriteLine("2. Login as Manager");
+            Console.WriteLine("3. Exit");
+            Console.Write("Choose an option: ");
+            var choice = Console.ReadLine();
 
-            while (true)
+            switch (choice)
             {
-                Console.Clear();
-                Console.WriteLine("Airport Ticket Booking System");
-                Console.WriteLine("1. Login as Passenger");
-                Console.WriteLine("2. Login as Manager");
-                Console.WriteLine("3. Exit");
-                Console.Write("Choose an option: ");
-
-                var choice = Console.ReadLine();
-
-                switch (choice)
-                {
-                    case "1":
-                        HandlePassengerOperations(flightService, bookingServices);
-                        break;
-                    case "2":
-                        HandleManagerOperations(flightService, bookingServices);
-                        break;
-                    case "3":
-                        return; // Exit the application
-                    default:
-                        Console.WriteLine("Invalid option. Please try again.");
-                        break;
-                }
+                case "1":
+                    HandlePassengerOperations(serviceProvider.GetService<IPassengerServices>(), flightService, bookingServices);
+                    break;
+                case "2":
+                    HandleManagerOperations(serviceProvider.GetService<IManagerServices>(), flightService, bookingServices);
+                    break;
+                case "3":
+                    return;
+                default:
+                    Console.WriteLine("Invalid option. Please try again.");
+                    break;
             }
         }
+    }
 
         // Passenger Operations
         static void HandlePassengerOperations(FlightService flightService, BookingServices bookingServices)
