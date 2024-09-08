@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 namespace BookingSystem{
-    public class CsvParser{
+    public class CsvParser : ICsvParser{
         public List<Flight> ParseFlights(string filePath){
             var flights = new List<Flight>();
             using (var reader = new StreamReader(filePath)){

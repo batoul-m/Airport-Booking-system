@@ -5,6 +5,6 @@ namespace BookingSystem
         void CancelBooking(string bookingID);
         void ModifyBooking(string bookingID, Flight newFlight, string newClass);
         List<Booking> GetBookingsByPassenger(double passengerID);
-        List<Booking> GetBookingsByCriteria(string flightId, double passengerId, string classType);
+        List<Booking> GetBookingsByCriteria(string flightId, string passengerId, string classType);
     }
 }
