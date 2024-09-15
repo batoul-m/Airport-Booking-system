@@ -1,20 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
 namespace BookingSystem
 {
-    public class FlightService
-    {
+    public class FlightService : IFlightService{
+        private readonly IFileDataAccess _dataAccess;
         private List<Flight> _flights;
-        private FileDataAccess _dataAccess;
-        public FlightService()
+
+        public FlightService(IFileDataAccess dataAccess)
         {
+            _dataAccess = dataAccess;
             _flights = new List<Flight>();
         }
 
-        public List<Flight> SearchFlights(string departureCountry, string destinationCountry, DateTime departureDate, string classType, decimal maxPrice)
+        public List<Flight> SearchFlights(string departureCountry, string destinationCountry, DateTime departureDate, decimal maxPrice)
         {
             return _flights.Where(f =>
                 (string.IsNullOrEmpty(departureCountry) || f.DepartureCountry.Equals(departureCountry, StringComparison.OrdinalIgnoreCase)) &&
@@ -23,13 +19,15 @@ namespace BookingSystem
                 (maxPrice <= 0 || f.Price <= maxPrice)
             ).ToList();
         }
-        public Flight? SearchFlightsById(string flightID){
-            if (string.IsNullOrEmpty(flightID)) return null;
-            return _flights.FirstOrDefault(f => f.FlightID == flightID);   
+
+        public Flight? SearchFlightsById(string flightID)
+        {
+            return _flights.FirstOrDefault(f => f.FlightID == flightID);
         }
+
         public void AddFlight(Flight flight)
         {
-            if (flight == null)
+            if (flight is null)
                 throw new ArgumentNullException(nameof(flight), "Flight cannot be null.");
             var validationErrors = ValidateFlightData(flight);
             if (validationErrors.Any())
@@ -39,9 +37,9 @@ namespace BookingSystem
 
         public void ImportFlightsFromCsv(string filePath)
         {
-            _dataAccess.LoadFlights(filePath);
+            _flights = _dataAccess.LoadFlights(filePath);
         }
-            
+
         public List<string> ValidateFlightData(Flight flight)
         {
             var errors = new List<string>();
@@ -59,7 +57,6 @@ namespace BookingSystem
                 errors.Add("ArrivalAirport is required.");
             if (flight.Price <= 0)
                 errors.Add("Price must be greater than zero.");
-
             return errors;
         }
     }

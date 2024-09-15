@@ -1,9 +1,12 @@
 using System;
 namespace BookingSystem{
-    public class FileDataAccess{    
-        private string _flightsFilePath = "flights.csv";
-        private string _bookingsFilePath = "bookings.csv";
-        private CsvParser? _csvParser;
+    public class FileDataAccess : IFileDataAccess{    
+        private string _flightsFilePath = "flightsCsvFile.csv";
+        private string _bookingsFilePath = "bookingsCsvFile.csv";
+        private readonly ICsvParser _csvParser;
+        public FileDataAccess(ICsvParser csvParser){
+            _csvParser = csvParser;
+        }
         public List<Flight> LoadFlights(string flightsFilePath)
         {   _flightsFilePath = flightsFilePath;
             if (!File.Exists(_flightsFilePath))
@@ -27,8 +30,9 @@ namespace BookingSystem{
             }
         }
 
-        public List<Booking> LoadBookings()
+        public List<Booking> LoadBookings(string bookingsFilePath)
         {
+            _bookingsFilePath = bookingsFilePath;
             if (!File.Exists(_bookingsFilePath))
                 throw new FileNotFoundException("Bookings file not found.", _bookingsFilePath);
             return _csvParser.ParseBookings(_bookingsFilePath);

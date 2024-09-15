@@ -12,6 +12,7 @@ namespace BookingSystem
         public Flight Flight{ get; set; }
         public DateTime BookingDate{ get; set; }
         public Passenger Passenger{ get; set; }
+        public Booking (){}
         public Booking(string bookingID, string classBook, Flight flight, DateTime bookingDate, Passenger passenger){
             ValidData(bookingID,classBook,bookingDate);
             Flight = flight;
